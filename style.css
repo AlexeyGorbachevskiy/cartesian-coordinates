@@ -1,0 +1,123 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #eee;
+    display: grid;
+    grid-template: 'canvas settings' 1fr/ 700px 1fr;
+}
+
+#canvas {
+    grid-area: canvas;
+}
+
+.settings {
+    grid-area: settings;
+    background-color: #fbf1d3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.get-object {
+    margin-bottom: 20px;
+}
+
+.button {
+    cursor: pointer;
+    background-color: #20c997;
+    border: none;
+    width: 120px;
+    height: 40px;
+    font-weight: 500;
+    transition: all 0.5s ease;
+    border-radius: 50rem !important;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    outline: none;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.button:hover {
+
+    background-color: #1ba77e;
+}
+
+.button:active {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.30);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.input-number {
+    width: 150px;
+    height: 35px;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    color: #656565;
+    margin-right: 5px;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    padding-left: 7px;
+}
+
+.input-number:active, .input-number:focus {
+    border: 1px solid dodgerblue;
+}
+
+.set-object {
+    margin-bottom: 20px;
+}
+
+.update-object {
+    margin-bottom: 20px;
+}
+
+.rotate-object {
+    height: 240px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template: 'rotateInputs rotateButton' 1fr/ 1fr 1fr;
+}
+
+.rotate-object__inputs-wrapper {
+    grid-area: rotateInputs;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.rotate-object__btn-wrapper {
+    grid-area: rotateButton;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#rotate-object-btn{
+    margin-right: 10px;
+}
+#angle-select{
+    cursor: pointer;
+}
+
