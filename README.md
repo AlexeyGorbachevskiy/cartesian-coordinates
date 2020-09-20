@@ -2,6 +2,7 @@
  |----------------------|
  | cartesian-coordinates|
 
+Link to gh-pages: https://alexeygorbachevskiy.github.io/cartesian-coordinates/
 
 # Техническое задание: cartesian-coordinates
 

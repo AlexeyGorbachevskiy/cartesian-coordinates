@@ -31,21 +31,88 @@ header {
     height: 60px;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
+}
+
+.switch {
+    margin-left: 30px;
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    /*left: 4px;*/
+    /*bottom: 4px;*/
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.drag-n-drop span{
+    color: rebeccapurple;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }
 
 header h1 {
     color: #eee;
     font-family: Din Alternate, Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-size: 20px;
-    margin-right: 200px;
+    font-size: 24px;
+    margin-right: 80px;
 }
+
 
 header a {
     margin-right: 20px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     color: #eee;
     font-family: Din Alternate, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -171,7 +238,8 @@ input::-webkit-inner-spin-button {
     border: 1px solid #d6e9c6;
     border-radius: 4px;
     color: #3c763d;
-    background-color: #dff0d8;
+    /*background-color: #dff0d8;*/
+    background-color: #a0d08a;
 }
 
 .local-storage {
@@ -197,6 +265,7 @@ input::-webkit-inner-spin-button {
 #save-to-ls:hover {
     background-color: darkorchid;
 }
+
 #clear-ls:hover {
     background-color: darkorchid;
 }

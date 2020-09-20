@@ -30,10 +30,11 @@ let canvasObjects = [
     },
 ]
 
+var isLocalStorageUsing = false;
+window.onload = function (e) {
 
-const renderObjects = () => {
-    createCanvas()
     if (localStorage.length !== 0) {
+        isLocalStorageUsing = true;
         canvasObjects = [];
         for (let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
@@ -41,6 +42,13 @@ const renderObjects = () => {
             canvasObjects = [...canvasObjects, item]
         }
     }
+    renderObjects()
+}
+
+
+const renderObjects = () => {
+    createCanvas()
+
     canvasObjects.forEach((el) => {
         for (let key in el) {
             if (el.hasOwnProperty(key) && key === 'name') {
@@ -191,13 +199,16 @@ const removeObject = (objectName) => {
         return el.name === objectName
     })
 
+    if(localStorage.length!==0){
+        localStorage.removeItem(removedObject.name)
+    }
+
     canvasObjects = canvasObjects.filter((el) => {
         return el.name !== objectName
     })
 
     return removedObject
 }
-
 
 
 const moveObject = (objectName, distance, angle) => {
@@ -789,6 +800,15 @@ saveToLS.addEventListener('click', saveToLocalStorage)
 function saveToLocalStorage() {
     canvasObjects.forEach((el) => {
         localStorage.setItem(el.name, JSON.stringify(el));
+        if (document.querySelector('.success-alert') === null) {
+            const successAlert = document.createElement("div");
+            successAlert.className = "success-alert";
+            successAlert.innerHTML = `<strong>Hooray!</strong> Objects were successfully saved to local storage.`;
+            document.querySelector('.move-object').append(successAlert);
+            setTimeout(() => {
+                document.querySelector('.success-alert').remove()
+            }, 2000)
+        }
     })
 }
 
@@ -797,5 +817,94 @@ clearLS.addEventListener('click', clearLocalStorage)
 
 function clearLocalStorage() {
     localStorage.clear()
+    if (document.querySelector('.success-alert') === null) {
+        const successAlert = document.createElement("div");
+        successAlert.className = "success-alert";
+        successAlert.innerHTML = `<strong>Hooray!</strong> Objects were successfully removed to local storage.`;
+        document.querySelector('.move-object').append(successAlert);
+        setTimeout(() => {
+            document.querySelector('.success-alert').remove()
+        }, 2000)
+    }
 }
+
+
+// ---------------------------------------------Drag&Drop----------------------------------------------
+
+function stroke(object) {
+    ctx.strokeRect(object.x, object.y, 60, 60)
+}
+
+var isCursorInRect = function (object) {
+    return mouse.x > object.x && mouse.x < object.x + 60 && mouse.y > object.y && mouse.y < object.y + 60
+}
+
+
+var mouse = {
+    x: 0,
+    y: 0,
+}
+
+var selected = false;
+
+window.onmousemove = function (e) {
+    mouse.x = e.pageX;
+    mouse.y = e.pageY;
+}
+
+window.onmousedown = function (e) {
+    if (!selected) {
+        for (let i = 0; i < canvasObjects.length; i++) {
+            if (isCursorInRect(canvasObjects[i])) {
+                selected = canvasObjects[i];
+            }
+        }
+
+    }
+}
+
+window.onmouseup = function (e) {
+    selected = false;
+}
+
+
+let dragNDropSwitch = document.getElementById('switch');
+dragNDropSwitch.addEventListener('click', onSwitchToggle)
+
+function onSwitchToggle() {
+    if (dragNDropSwitch.checked) {
+        var switchTimerId = setInterval(function () {
+            if (!dragNDropSwitch.checked) {
+                clearInterval(switchTimerId)
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            renderObjects()
+            for (let i = 0; i < canvasObjects.length; i++) {
+                if (isCursorInRect(canvasObjects[i])) {
+                    ctx.lineWidth = 5;
+                    ctx.strokeStyle = 'red'
+                    stroke(canvasObjects[i])
+                }
+            }
+            if (selected) {
+                selected.x = mouse.x - 60 / 2;
+                selected.y = mouse.y - 60 / 2;
+                // stroke(selected)
+            }
+        }, 100)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
