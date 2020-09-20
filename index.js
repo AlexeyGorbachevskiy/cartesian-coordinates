@@ -33,7 +33,6 @@ let canvasObjects = [
 
 const renderObjects = () => {
     createCanvas()
-    console.log(canvasObjects)
     canvasObjects.forEach((el) => {
         for (let key in el) {
             if (el.hasOwnProperty(key) && key === 'name') {
@@ -65,7 +64,7 @@ const getObjectsByXY = (x, y) => {
         ctx.strokeRect(x, y, 60, 60);
         return canvasObjects[objectIndex].name
     } else {
-        throw new Error('type correct coordinates')
+        throw new Error('Type existing coordinates.')
     }
 }
 
@@ -149,7 +148,6 @@ const moveObject = (objectName, distance, angle) => {
     removeObject(objectName)
 
 
-
     var timerMoveId = setInterval(function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         renderObjects();
@@ -221,6 +219,9 @@ const moveObject = (objectName, distance, angle) => {
 
 
 // -----------------------------------------------------HANDLERS-------------------------------------------------
+
+var inputError = false;
+
 // Get Object
 const getObjectBtn = document.getElementById('get-object-btn')
 getObjectBtn.addEventListener('click', onGetObject)
@@ -230,7 +231,28 @@ function onGetObject() {
     renderObjects()
     const getObjectX = document.getElementById('get-object-input-x').valueAsNumber
     const getObjectY = document.getElementById('get-object-input-y').valueAsNumber
-    getObjectsByXY(getObjectX, getObjectY);
+    try {
+        getObjectsByXY(getObjectX, getObjectY);
+        document.querySelector('.error-alert').remove()
+        inputError=false;
+        document.getElementById('get-object-input-x').style.border='none'
+        document.getElementById('get-object-input-y').style.border='none'
+    } catch (e) {
+        inputError = true;
+        document.getElementById('get-object-input-x').style.border = '2px solid red'
+        document.getElementById('get-object-input-y').style.border = '2px solid red'
+
+        if(document.querySelector('.error-alert')===null){
+            const errorAlert=document.createElement("div");
+            errorAlert.className = "error-alert";
+            errorAlert.innerHTML = `<strong>Attention!</strong> ${e.message}`;
+            document.querySelector('.move-object').append(errorAlert);
+            // document.querySelector('.move-object').append('safdsfsdfd',errorElement)
+        }
+
+    }
+
+
 }
 
 // Set Object
@@ -287,4 +309,31 @@ function onMoveObject() {
     const moveObjectDistance = document.getElementById('move-object-input-distance').valueAsNumber
     const moveObjectAngle = document.getElementById('move-object-angle-select').value
     moveObject(moveObjectName, moveObjectDistance, moveObjectAngle);
+}
+
+
+// --------------------------------------------------Error Handling------------------------------------------------
+
+document.getElementById('get-object-input-x').onfocus=function(){
+    if(!inputError){
+        document.getElementById('get-object-input-x').style.border='1px solid dodgerblue'
+    }
+
+}
+document.getElementById('get-object-input-x').onblur=function(){
+    if(!inputError){
+        document.getElementById('get-object-input-x').style.border='none'
+    }
+}
+
+document.getElementById('get-object-input-y').onfocus=function(){
+    if(!inputError){
+        document.getElementById('get-object-input-y').style.border='1px solid dodgerblue'
+    }
+
+}
+document.getElementById('get-object-input-y').onblur=function(){
+    if(!inputError){
+        document.getElementById('get-object-input-y').style.border='none'
+    }
 }
