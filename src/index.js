@@ -6,7 +6,6 @@ import {updateObjectXY} from "./features/updateObjects";
 import {rotateObject} from "./features/rotateObject";
 import {moveObject} from "./features/moveObject";
 import {removeObject} from "./features/removeObject";
-import {errorReset} from "./utilities/errorReset";
 import {getObjectsByXY} from "./features/getObjects";
 
 
@@ -54,8 +53,24 @@ window.updateInputError = false;
 window.moveInputError = false;
 window.rotateInputError = false;
 window.moveInputError = false;
+
 window.removedRotateObject = '';
 window.rotateCallsCount = 0;
+
+export function errorReset() {
+    window.isRotating = false;
+    window.getInputError = false;
+    window.setInputError = false;
+    window.updateInputError = false;
+    window.moveInputError = false;
+    window.rotateInputError = false;
+    window.moveInputError = false;
+    let list = document.getElementsByTagName('input');
+    for (let i = 0; i < list.length; i++) {
+        list[i].style.border = 'none'
+    }
+    document.getElementById('move-object-angle-select').style.border = 'none';
+}
 
 
 //Get Object
@@ -244,11 +259,11 @@ function onRotateObject() {
             document.querySelector('.error-alert').remove()
         }
         window.rotateInputError = false;
-        document.getElementById('rotate-object-input-name').value=''
-        document.getElementById('rotate-object-input-x').value=''
-        document.getElementById('rotate-object-input-y').value=''
-        document.getElementById('rotate-object-input-radius').value=''
-        document.getElementById('rotate-object-input-angle').value=''
+        document.getElementById('rotate-object-input-name').value = ''
+        document.getElementById('rotate-object-input-x').value = ''
+        document.getElementById('rotate-object-input-y').value = ''
+        document.getElementById('rotate-object-input-radius').value = ''
+        document.getElementById('rotate-object-input-angle').value = ''
 
         document.getElementById('rotate-object-input-name').style.border = 'none'
         document.getElementById('rotate-object-input-x').style.border = 'none'
@@ -310,9 +325,10 @@ function onMoveObject() {
             document.querySelector('.error-alert').remove()
         }
         window.moveInputError = false;
-        document.getElementById('move-object-input-name').value=''
-        document.getElementById('move-object-input-distance').value=''
-        document.getElementById('move-object-angle-select').value=''
+        document.getElementById('move-object-input-name').value = ''
+        document.getElementById('move-object-input-distance').value = ''
+        document.getElementById('move-object-angle-select').value =
+            document.getElementById('default-select-value').text
 
         document.getElementById('move-object-input-name').style.border = 'none'
         document.getElementById('move-object-input-distance').style.border = 'none'
@@ -639,7 +655,7 @@ function onSwitchToggle() {
         document.querySelector('.settings-screen').style = 'display:none'
         let div = document.createElement('div');
         div.className = 'temporary-title'
-        div.innerHTML = 'You can Drag-and-Drop objects now';
+        div.innerHTML = 'You can Drag and Drop objects now';
         div.style = 'width:100%; margin-top:200px; display:flex; justify-content:center; font-size:28px;'
         document.querySelector('.local-storage').append(div)
 
